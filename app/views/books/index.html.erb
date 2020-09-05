@@ -16,8 +16,8 @@
       <tr>
         <td><%= book.title %></td>
         <td><%= book.body %></td>
-        <td><%= link_to 'Show', book_path(book), class: "show_#{book.id}" %></td>
-        <td><%= link_to 'Edit', edit_book_path, class: "edit_#{book.id}" %></td>
+        <td><%= link_to 'Show', book_path(book.id), class: "show_#{book.id}" %></td>
+        <td><%= link_to 'Edit', edit_book_path(book.id), class: "edit_#{book.id}" %></td>
         <td><%= link_to 'Destroy', book_path(book), method: :delete, data: { confirm: 'Are you sure?' }, class: "destroy_#{book.id}" %></td>
       </tr>
     <% end %>
@@ -26,4 +26,15 @@
 
 
 <h2>New book</h2>
-<%= render 'form' %>
+  <% if @book.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= @book.errors.count %>errors prohibited this book from being saved:</h2>
+      <% @book.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+  
+    </div>
+  <% end %>
+  <%= form_for(@book, :url => {:action => 'create'} ) do |f| %>
+<%= render :partial => 'form', :locals => {:f => f} %>
+<% end %>
